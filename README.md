@@ -35,6 +35,8 @@ Skills are installed globally and available across all your projects.
 
 This updates all installed plugins from all marketplaces at once.
 
+Claude Code checks for updates automatically at every startup — no action needed on your end.
+
 ## Available Skills
 
 | Skill | Command | Description |
@@ -80,6 +82,12 @@ my-skill/
   "license": "MIT"
 }
 ```
+
+### Releasing updates
+
+**Always bump `version` in `plugin.json` when you change a skill.** Claude Code compares version strings to decide whether to auto-update. If the version stays the same, installed clients will not receive the new content even after the marketplace refreshes.
+
+Use [semantic versioning](https://semver.org): `1.0.0` → `1.0.1` for patches, `1.1.0` for new behaviour, `2.0.0` for breaking changes.
 
 ## Resources
 
