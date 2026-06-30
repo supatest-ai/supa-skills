@@ -89,7 +89,7 @@ After completing the happy-path walkthrough, stop the GIF recording and save the
 
 ### Step 6 — Generate the Report
 
-Create a `REPORT.md` in `.claude/reports/<feature-slug>/`:
+Create a `REPORT.md` in the project root or a `reports/` directory:
 
 ```markdown
 # Feature Test Report: <Feature Name>
@@ -195,7 +195,7 @@ see confirmation. Edge cases: declined card, empty cart checkout attempt.
 
 Reports are saved to:
 ```
-.claude/reports/<feature-slug>/
+reports/<feature-slug>/
 ├── REPORT.md                        # Main report
 ├── screenshots/
 │   ├── 01-initial-state.png

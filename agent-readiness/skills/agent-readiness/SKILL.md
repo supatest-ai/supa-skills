@@ -100,7 +100,7 @@ When Python 3 is not available, score each dimension 1–5 manually using the ch
 
 ### Report delivery
 
-Persist the report as an HTML document artifact when Aiden tools are available. Otherwise display the summary in chat and note the full HTML path at `/tmp/agent-readiness-report.html`.
+Persist the report as an HTML document artifact when team artifact/document tools are available. Otherwise display the summary in chat and note the full HTML path at `/tmp/agent-readiness-report.html`.
 
 ### Updates
 

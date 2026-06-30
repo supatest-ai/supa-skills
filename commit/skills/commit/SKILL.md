@@ -100,8 +100,6 @@ Run the commit:
 ```bash
 git commit -m "$(cat <<'EOF'
 <commit message here>
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -359,4 +357,4 @@ Updated files
 - This skill only commits **already staged** files
 - Use `/commit-all` if you want to stage and commit everything
 - If commit fails due to hooks, fix the issue and create a NEW commit (never amend unless explicitly requested)
-- Always add "Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>" to commits
+- Do not add an agent co-author trailer unless the user or project explicitly requires one
