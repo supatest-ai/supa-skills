@@ -1,12 +1,12 @@
 ---
 name: review-pr
-description: Review a pull request or set of code changes. Filters to issues introduced by this PR (not pre-existing), scores confidence, and produces a prioritized report with severity tiers. Requires user approval before posting anything to GitHub.
+description: Review a pull request or set of code changes. Filters to issues introduced by this PR (not pre-existing), scores confidence, and produces a prioritized HTML report with severity tiers.
 argument-hint: [PR number or branch name]
 ---
 
 # Code Review
 
-Structured pull request review. Focuses on issues *introduced* by this change, not pre-existing ones. Produces a prioritized report — nothing is posted to GitHub without your approval.
+Structured pull request review. Focuses on issues *introduced* by this change, not pre-existing ones. Produces a prioritized HTML report.
 
 ## When to Use
 
@@ -21,11 +21,10 @@ Structured pull request review. Focuses on issues *introduced* by this change, n
 - Do not block on style/formatting — that's what linters are for
 - Do not rewrite code to a personal preference
 - Do not list speculative risks without evidence
-- Do not post anything to GitHub without explicit user approval
 
 ---
 
-## Phase 1 — Context Gathering (Before Looking at Code)
+## Phase 1 — Context Gathering
 
 Read the following before examining any diff:
 
@@ -33,17 +32,6 @@ Read the following before examining any diff:
 2. **Linked issues** — What problem is being solved?
 3. **Commit messages** — What was the author's intent at each step?
 4. **CLAUDE.md / CONTRIBUTING.md** — Any project-specific conventions?
-
-```bash
-# Get PR metadata
-gh pr view <pr-number>
-
-# Get the diff
-gh pr diff <pr-number>
-
-# Get list of changed files
-gh pr diff <pr-number> --name-only
-```
 
 If the PR is a draft, has `WIP` in the title, or is already closed — ask the user before proceeding.
 
@@ -56,14 +44,11 @@ For PRs with >400 lines changed: flag this to the user and suggest splitting. Pr
 Only report issues that are new in this diff. Use `git blame` to confirm an issue was introduced by this change, not inherited from existing code:
 
 ```bash
-# Check who introduced a specific line
 git log -p --follow -S "<suspicious code>" -- <file>
-
-# Security regression check: was this code previously removed for a reason?
 git log --all --oneline -S "<removed-code-pattern>"
 ```
 
-If a suspicious pattern exists elsewhere in the codebase and is not new here, mark it as `pre-existing` and skip it (or note it separately as a background observation).
+If a suspicious pattern exists elsewhere in the codebase and is not new here, mark it as `pre-existing` and skip it.
 
 ---
 
@@ -80,13 +65,6 @@ Work through these categories in priority order:
 - **Dependency risk:** new packages added — are they trustworthy, maintained, minimal?
 
 For each finding: state the exploit scenario concretely, not just "this could be insecure."
-
-**Blast radius check for security issues:**
-```bash
-# How many callers does this modified function have?
-grep -rn "<function-name>" --include="*.ts" --include="*.py" --include="*.go" | wc -l
-```
-If blast radius is high (many callers), escalate severity.
 
 ### 2. Correctness
 - Logic errors, off-by-one, null/undefined handling
@@ -144,99 +122,125 @@ Skip findings that:
 
 ---
 
-## Phase 5 — Build the Review Report
+## Phase 5 — Build the HTML Report
 
-Format findings with severity tiers:
+Generate a self-contained HTML report at `/tmp/code-review-report.html`:
 
-```markdown
-## Code Review: <PR title> (#<number>)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Code Review: <PR title> (#<number>)</title>
+  <style>
+    body { font: 14px/1.6 system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; color: #1a1a2e; background: #f8f9fa; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .meta { color: #6b7280; font-size: 13px; margin-bottom: 20px; }
+    .summary { display: flex; gap: 12px; margin-bottom: 24px; }
+    .summary-item { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 18px; text-align: center; flex: 1; }
+    .summary-item .count { font-size: 28px; font-weight: 700; display: block; }
+    .summary-item .label { font-size: 11px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em; }
+    .finding { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; }
+    .finding h3 { margin: 0 0 6px; font-size: 15px; }
+    .finding .file { font-family: monospace; font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+    .finding .desc { font-size: 13px; margin-bottom: 8px; }
+    .finding .confidence { font-size: 11px; color: #6b7280; }
+    .blocking { border-left: 4px solid #dc2626; }
+    .blocking h3 { color: #dc2626; }
+    .important { border-left: 4px solid #d97706; }
+    .important h3 { color: #d97706; }
+    .nit { border-left: 4px solid #6b7280; }
+    .nit h3 { color: #6b7280; }
+    .suggestion { border-left: 4px solid #2563eb; }
+    .suggestion h3 { color: #2563eb; }
+    .positive { border-left: 4px solid #16a34a; }
+    .positive h3 { color: #16a34a; }
+    pre { background: #f1f5f9; border-radius: 4px; padding: 8px 12px; font-size: 12px; overflow-x: auto; }
+    .findings-section { margin-bottom: 24px; }
+    .findings-section h2 { font-size: 16px; margin: 0 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; }
+    .verdict { text-align: center; padding: 16px; font-size: 18px; font-weight: 700; border-radius: 8px; margin-top: 24px; }
+    .verdict.approve { background: #dcfce7; color: #16a34a; }
+    .verdict.changes { background: #fef3c7; color: #d97706; }
+  </style>
+</head>
+<body>
 
-**Branch:** `<branch>` → `main`
-**Files changed:** N | **Lines:** +X / -Y
+<h1>Code Review: <PR title> (#<number>)</h1>
+<div class="meta">
+  <strong>Branch:</strong> `<branch>` → `main` &middot;
+  <strong>Files:</strong> N &middot;
+  <strong>Lines:</strong> +X / -Y
+</div>
 
----
+<div class="summary">
+  <div class="summary-item"><span class="count" style="color:#dc2626">N</span><span class="label">Blocking</span></div>
+  <div class="summary-item"><span class="count" style="color:#d97706">N</span><span class="label">Important</span></div>
+  <div class="summary-item"><span class="count" style="color:#6b7280">N</span><span class="label">Nits</span></div>
+  <div class="summary-item"><span class="count" style="color:#2563eb">N</span><span class="label">Suggestions</span></div>
+</div>
 
-### 🔴 Blocking — Must fix before merge
-Issues that will cause bugs, security vulnerabilities, or data loss.
-
-**[Security] SQL injection in user search** · `src/api/users.ts:47`
-Raw user input interpolated into query string. Attacker can extract any table.
-```ts
-// Current
+<!-- Blocking -->
+<div class="findings-section">
+<h2>🔴 Blocking — Must fix before merge</h2>
+<div class="finding blocking">
+  <h3>[Security] SQL injection in user search</h3>
+  <div class="file">src/api/users.ts:47</div>
+  <div class="desc">Raw user input interpolated into query string. Attacker can extract any table.</div>
+  <pre>// Current
 db.query(`SELECT * FROM users WHERE name = '${req.query.name}'`)
 // Fix
-db.query('SELECT * FROM users WHERE name = $1', [req.query.name])
-```
-Confidence: 95%
+db.query('SELECT * FROM users WHERE name = $1', [req.query.name])</pre>
+  <div class="confidence">Confidence: 95%</div>
+</div>
+</div>
 
----
+<!-- Important -->
+<div class="findings-section">
+<h2>🟡 Important — Should fix before merge</h2>
+<div class="finding important">
+  <h3>[Correctness] Unhandled promise rejection</h3>
+  <div class="file">src/jobs/sync.ts:23</div>
+  <div class="desc">...</div>
+  <div class="confidence">Confidence: 85%</div>
+</div>
+</div>
 
-### 🟡 Important — Should fix before merge
-Real issues that don't block functionality but create risk.
+<!-- Nits -->
+<div class="findings-section">
+<h2>🔵 Nits</h2>
+<div class="finding nit">
+  <h3>[Maintainability] Magic number</h3>
+  <div class="file">src/config.ts:8</div>
+  <div class="desc">...</div>
+</div>
+</div>
 
-**[Correctness] Unhandled promise rejection** · `src/jobs/sync.ts:23`
-...
+<!-- Suggestions -->
+<div class="findings-section">
+<h2>💡 Suggestions</h2>
+<div class="finding suggestion">
+  <h3>Suggestion title</h3>
+  <div class="desc">Optional improvement worth considering.</div>
+</div>
+</div>
 
----
+<!-- Positive Observations -->
+<div class="findings-section">
+<h2>✅ Positive Observations</h2>
+<div class="finding positive">
+  <h3>Well-structured error handling</h3>
+  <div class="desc">New error boundary covers all API call sites.</div>
+</div>
+</div>
 
-### 🔵 Nit — Fix if easy, otherwise fine
-Minor issues that won't cause problems but improve quality.
+<div class="verdict approve">✅ Approve</div>
+<!-- or <div class="verdict changes">🔄 Request Changes</div> -->
 
-**[Maintainability] Magic number** · `src/config.ts:8`
-...
-
----
-
-### 💡 Suggestions
-Optional improvements worth considering.
-
----
-
-### ✅ Positive Observations
-<Acknowledge good decisions, clean abstractions, well-tested changes>
-
----
-
-**Summary:** N blocking · N important · N nits
-**Verdict:** ✅ Approve / 🔄 Request Changes / ❓ Comment
-```
-
----
-
-## Phase 6 — Human Approval Before Posting
-
-**Show the full review report to the user first.** Ask:
-
-> "Ready to post this review to GitHub? I can post it as:
-> - A review comment (approve / request changes / comment)
-> - Inline comments on specific lines
-> - Both"
-
-Wait for explicit confirmation. Do not post anything without it.
-
----
-
-## Phase 7 — Post to GitHub
-
-After approval:
-
-```bash
-# Post review with inline comments
-gh pr review <pr-number> \
-  --request-changes \
-  --body "<summary comment>"
-
-# Post an inline comment on a specific line
-gh api repos/{owner}/{repo}/pulls/<pr-number>/comments \
-  --method POST \
-  --field body="<comment>" \
-  --field commit_id="<head-sha>" \
-  --field path="<file-path>" \
-  --field line=<line-number> \
-  --field side="RIGHT"
+</body>
+</html>
 ```
 
----
+Save the file and report the path to the user.
 
 ## Severity Reference
 

@@ -103,38 +103,69 @@ cd <repo> && git log --author="<author>" --since="<start>" --until="<end>" --sho
 - Total lines deleted (sum from git stats)
 - Total distinct tasks
 
-### 5. Generate Output
+### 5. Generate HTML Output
 
-Use this format:
+Create a self-contained HTML report at `/tmp/work-summary.html`:
 
-```markdown
-## Work Summary: <start> - <end>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Work Summary: <start> - <end></title>
+  <style>
+    body { font: 14px/1.6 system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #1a1a2e; background: #f8f9fa; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    .meta { color: #6b7280; font-size: 13px; margin-bottom: 20px; }
+    .summary-bar { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 20px; }
+    .summary-bar .stat { text-align: center; flex: 1; }
+    .summary-bar .stat .num { font-size: 28px; font-weight: 700; display: block; }
+    .summary-bar .stat .label { font-size: 11px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em; }
+    .task-group { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; }
+    .task-group h2 { font-size: 16px; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; }
+    .task-group h2 span { color: #6b7280; font-weight: 400; }
+    .task { padding: 6px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .task:last-child { border-bottom: 0; }
+    .task .repo { color: #6b7280; font-size: 12px; }
+    .inline-task { display: inline; }
+    ul { padding-left: 20px; margin: 4px 0; }
+    li { font-size: 14px; margin: 4px 0; }
+  </style>
+</head>
+<body>
 
-### Large (<count>)
-1. **Task Name** (repo-name) - Brief description of what was accomplished
-2. **Another Task** (repo-name) - Description
+<h1>Work Summary: <start> - <end></h1>
+<div class="meta">Author: <name></div>
 
-### Medium (<count>)
-1. **Task Name** (repo-name) - Brief description
-2. **Another Task** (repo-name) - Description
+<div class="summary-bar">
+  <div class="stat"><span class="num">N</span><span class="label">Commits</span></div>
+  <div class="stat"><span class="num">~Xk</span><span class="label">Lines added</span></div>
+  <div class="stat"><span class="num">~Yk</span><span class="label">Lines deleted</span></div>
+  <div class="stat"><span class="num">N</span><span class="label">Tasks</span></div>
+</div>
 
-### Small (<count>)
-- Fix login validation error (repo-name)
-- Update dashboard styling (repo-name)
-- Add API documentation (repo-name)
-- Refactor utility functions (repo-name)
+<div class="task-group">
+  <h2>Large Tasks <span>(N)</span></h2>
+  <div class="task"><strong>Task Name</strong> <span class="repo">(repo)</span> — Brief description</div>
+</div>
 
----
+<div class="task-group">
+  <h2>Medium Tasks <span>(N)</span></h2>
+  <div class="task"><strong>Task Name</strong> <span class="repo">(repo)</span> — Brief description</div>
+</div>
 
-**Summary:** X commits, ~Yk lines added, ~Zk lines deleted across N distinct tasks
+<div class="task-group">
+  <h2>Small Tasks <span>(N)</span></h2>
+  <ul>
+    <li>Fix login validation error <span class="repo">(repo)</span></li>
+  </ul>
+</div>
+
+</body>
+</html>
 ```
 
-**Formatting notes:**
-- Use **bold** for task names
-- Include repo name in parentheses if multiple repos
-- Round line counts to nearest thousand (e.g., ~2k, ~500)
-- List small tasks as bullet points (not numbered)
-- Keep descriptions concise (one line)
+Save the file and report the path to the user.
 
 ## Examples
 
@@ -146,59 +177,18 @@ You:
 1. cd frontend
 2. Run git log commands
 3. Analyze commits
-4. Output:
+4. Generate HTML report at /tmp/work-summary.html
 
-## Work Summary: 2026-02-13 09:00 - 2026-02-13 18:00
-
-### Large (1)
-1. **Add user authentication system** (frontend) - Implemented JWT-based auth with login, signup, and password reset flows
-
-### Medium (2)
-1. **Refactor API error handling** (frontend) - Standardized error responses across all endpoints
-2. **Add test coverage reporting** (frontend) - Integrated coverage tools and added dashboard
-
-### Small (5)
-- Fix session timeout bug
-- Update login page styling
-- Add API documentation for auth endpoints
-- Remove unused dependencies
-- Fix TypeScript type errors
-
----
-
-**Summary:** 15 commits, ~2k lines added, ~500 lines deleted across 8 distinct tasks
+Summary: 15 commits, ~2k lines added, ~500 lines deleted across 8 distinct tasks
 ```
 
 ### Example 2: Multiple Repos
 ```
 User: "/work-summary 'Alice Smith' '2026-02-01 00:00' '2026-02-07 23:59' frontend backend docs"
 
-You analyze commits across all three repos and group by task:
+You analyze commits across all three repos, group by task, and generate /tmp/work-summary.html.
 
-## Work Summary: 2026-02-01 - 2026-02-07
-
-### Large (2)
-1. **Implement CI/CD pipeline** (frontend, backend) - Set up GitHub Actions for automated testing and deployment
-2. **Add real-time collaboration** (backend) - WebSocket-based live editing with conflict resolution
-
-### Medium (3)
-1. **Optimize database queries** (backend) - Added indexes and rewrote slow queries
-2. **Update documentation site** (docs) - Redesigned docs with new examples
-3. **Add error tracking** (frontend) - Integrated Sentry for error monitoring
-
-### Small (8)
-- Fix dashboard loading spinner (frontend)
-- Update README with new features (backend)
-- Add changelog for v2.1 (docs)
-- Fix mobile responsive issues (frontend)
-- Remove debug logging (backend)
-- Update dependencies (frontend, backend)
-- Fix broken links in docs (docs)
-- Add code of conduct (docs)
-
----
-
-**Summary:** 42 commits, ~5k lines added, ~2k lines deleted across 13 distinct tasks
+Summary: 42 commits, ~5k lines added, ~2k lines deleted across 13 distinct tasks
 ```
 
 ### Example 3: No Arguments - Interactive

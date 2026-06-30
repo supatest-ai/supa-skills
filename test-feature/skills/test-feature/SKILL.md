@@ -1,30 +1,27 @@
 ---
 name: test-feature
-description: Interactively test a completed feature using browser automation. Navigates the live app, exercises all key flows, captures a GIF video of the happy path, and produces a visual verification report. Use after implementing a new feature or making code changes that need testing verification.
+description: Interactively test a completed feature using browser automation. Navigates the live app, exercises key flows, captures screenshots, and produces an HTML verification report.
 argument-hint: [feature-description]
 ---
 
 # Test Feature
 
-Use this skill when you have finished implementing a feature and want to verify it works correctly through live browser testing with a recorded video report.
+Use this skill when you have finished implementing a feature and want to verify it works correctly through live browser testing with a visual HTML report.
 
 ## When to Use
 
 Invoke this skill AFTER you have:
 - Completed implementing a new feature
 - Made code changes that need testing verification
-- Want a visual walkthrough with screenshots and a recorded GIF for stakeholders
+- Want a visual walkthrough with screenshots for stakeholders
 
 ## What This Skill Does
-
-This skill uses the **agent-browser** skill to drive a real browser session against your running application:
 
 1. **Understands the feature** from your description and any plan/spec files
 2. **Navigates the live app** to locate the feature under test
 3. **Exercises all key flows** — happy path, edge cases, and error states
-4. **Records a GIF** of the complete happy-path walkthrough
-5. **Captures screenshots** at each significant UI state
-6. **Generates a REPORT.md** with all artifacts and a pass/fail summary
+4. **Captures screenshots** at each significant UI state
+5. **Generates an HTML report** with all artifacts and a pass/fail summary
 
 ## Prerequisites
 
@@ -33,39 +30,16 @@ Before invoking this skill, ensure:
 2. You are logged in or test credentials are available
 3. The feature you want to test is deployed/served locally
 
-## Your Task
-
-When this skill is invoked, follow these steps:
+## Instructions
 
 ### Step 1 — Understand the Feature
 
 Read the feature description provided by the user. If a plan file or spec is referenced, read it. Summarize:
 - What the feature does
 - The key flows to test (happy path + edge cases)
-- Where in the app it lives (URL, page, component)
+- Where in the app it lives
 
-### Step 2 — Start the Browser Session
-
-Invoke the **agent-browser** skill to open the application and navigate to the feature:
-
-```
-Use agent-browser to:
-- Open the app at <URL>
-- Navigate to the page/section containing the feature
-- Take an initial screenshot to confirm the starting state
-```
-
-### Step 3 — Start GIF Recording
-
-Before exercising any flows, start recording a GIF that will capture the full walkthrough:
-
-```
-Use agent-browser to start a GIF recording named "<feature-slug>-walkthrough.gif"
-```
-
-Keep recording throughout all steps below. Capture extra frames before and after each interaction for smooth playback.
-
-### Step 4 — Exercise All Flows
+### Step 2 — Exercise All Flows
 
 Work through each flow systematically, taking a screenshot after each significant state change:
 
@@ -83,101 +57,87 @@ Work through each flow systematically, taking a screenshot after each significan
 
 For each flow, note: what was tested, what was observed, pass or fail.
 
-### Step 5 — Stop GIF Recording
+### Step 3 — Generate the HTML Report
 
-After completing the happy-path walkthrough, stop the GIF recording and save the file.
+Create a self-contained HTML report at `reports/<feature-slug>/index.html`:
 
-### Step 6 — Generate the Report
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Feature Test Report: <Feature Name></title>
+  <style>
+    body { font: 14px/1.6 system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; background: #f8f9fa; color: #1a1a2e; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .meta { color: #6b7280; font-size: 13px; margin-bottom: 20px; }
+    .status { display: inline-block; padding: 4px 16px; border-radius: 99px; font-weight: 700; font-size: 14px; margin-bottom: 20px; }
+    .status.pass { background: #dcfce7; color: #16a34a; }
+    .status.fail { background: #fef2f2; color: #dc2626; }
+    .status.partial { background: #fef3c7; color: #d97706; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f1f5f9; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+    .pass-badge { color: #16a34a; font-weight: 600; }
+    .fail-badge { color: #dc2626; font-weight: 600; }
+    .screenshot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+    .screenshot-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+    .screenshot-card img { width: 100%; display: block; }
+    .screenshot-card .caption { padding: 8px 12px; font-size: 12px; color: #6b7280; }
+    .issues { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px 20px; margin: 12px 0 20px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 24px 0 8px; padding-bottom: 6px; border-bottom: 2px solid #e5e7eb; }
+  </style>
+</head>
+<body>
 
-Create a `REPORT.md` in the project root or a `reports/` directory:
+<h1>Feature Test Report: <Feature Name></h1>
+<div class="meta">Date: <today> &middot; URL: <url tested></div>
+<div class="status pass">PASS</div>
+<!-- or <div class="status fail">FAIL</div> -->
 
-```markdown
-# Feature Test Report: <Feature Name>
+<div class="section-title">Summary</div>
+<p><1-3 sentence summary of what was tested and overall result></p>
 
-**Date:** <today's date>
-**App URL:** <url tested>
-**Status:** PASS / FAIL / PARTIAL
+<div class="section-title">Test Results</div>
+<table>
+  <tr><th>Flow</th><th>Step</th><th>Result</th></tr>
+  <tr><td>Happy Path</td><td><step></td><td class="pass-badge">PASS</td></tr>
+  <tr><td>Edge Case</td><td><empty state></td><td class="pass-badge">PASS</td></tr>
+  <tr><td>Error State</td><td><invalid input></td><td class="fail-badge">FAIL</td></tr>
+</table>
 
-## Summary
+<div class="section-title">Screenshots</div>
+<div class="screenshot-grid">
+  <div class="screenshot-card">
+    <img src="screenshots/01-initial-state.png" alt="Initial state" />
+    <div class="caption">Initial state — feature loaded correctly</div>
+  </div>
+  <div class="screenshot-card">
+    <img src="screenshots/02-action.png" alt="After action" />
+    <div class="caption">After submitting form — validation shown</div>
+  </div>
+</div>
 
-<1-3 sentence summary of what was tested and overall result>
+<div class="section-title">Issues Found</div>
+<div class="issues">
+  <p>No issues found.</p>
+  <!-- or list bugs, UX issues, unexpected behavior -->
+</div>
 
-## Feature Description
-
-<what the feature does>
-
-## Test Results
-
-### Happy Path
-- [ ] <flow step 1> — PASS/FAIL
-- [ ] <flow step 2> — PASS/FAIL
-...
-
-### Edge Cases
-- [ ] <edge case> — PASS/FAIL
-...
-
-### Error States
-- [ ] <error state> — PASS/FAIL
-...
-
-## Screenshots
-
-| Step | Screenshot | Notes |
-|------|-----------|-------|
-| <step name> | ![step](<path>) | <observation> |
-...
-
-## Happy Path Video
-
-![Walkthrough](<feature-slug>-walkthrough.gif)
-
-## Issues Found
-
-<List any bugs, UX issues, or unexpected behavior. If none, state "No issues found.">
-
-## Files Changed
-
-<List the key files that implement this feature, if known>
+</body>
+</html>
 ```
 
-### Step 7 — Report to the User
+### Step 4 — Report to the User
 
 Tell the user:
 - Overall pass/fail status
 - Where the report is saved
 - Any issues found
-- A direct path to the GIF recording
 
 ## How to Describe the Feature
 
-Give the skill a rich, contextual description. Include:
-
-### 1. Feature Name and Location
-```
-"The date range picker on the Test Runs page"
-```
-
-### 2. Key Flows to Test
-```
-- Default 7-day range is pre-selected
-- Preset buttons: Today, Yesterday, Last 7 days, Last 30 days
-- Custom date range via calendar picker
-- Table and stats update when date range changes
-```
-
-### 3. App URL
-```
-"App is running at http://localhost:3000"
-```
-
-### 4. Files Changed (optional, for context)
-```
-- frontend/src/pages/runs.tsx
-- api/src/controllers/runs.controller.ts
-```
-
-## Example Invocations
+Include the feature name, location in the app, key flows to test, and the app URL:
 
 ```
 /test-feature The new user onboarding modal — app at http://localhost:3000.
@@ -185,32 +145,13 @@ Flows: first-time user sees modal on login, can skip or complete steps,
 progress is saved, modal doesn't show again after completion.
 ```
 
-```
-/test-feature Stripe checkout — http://localhost:3000/checkout.
-Happy path: add item, enter card 4242 4242 4242 4242, complete purchase,
-see confirmation. Edge cases: declined card, empty cart checkout attempt.
-```
-
 ## Output Location
 
-Reports are saved to:
 ```
 reports/<feature-slug>/
-├── REPORT.md                        # Main report
-├── screenshots/
-│   ├── 01-initial-state.png
-│   ├── 02-<step>.png
-│   └── ...
-└── <feature-slug>-walkthrough.gif   # Happy path video
-```
-
-## Integration with Development Workflow
-
-```
-1. Plan the feature
-2. Implement the feature
-3. Commit the changes
-4. [INVOKE THIS SKILL] → Browser automation tests the live feature
-5. Review the generated report and GIF
-6. Share report with team as a verification artifact
+├── index.html                      # Main HTML report
+└── screenshots/
+    ├── 01-initial-state.png
+    ├── 02-<step>.png
+    └── ...
 ```
