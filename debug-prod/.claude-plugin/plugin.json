@@ -1,7 +1,0 @@
-{
-  "name": "debug-prod",
-  "description": "Investigate a production incident using mitigation-first protocol. Uses the observability funnel (metrics → traces → logs) to find root cause and produces a structured findings report.",
-  "version": "1.0.0",
-  "author": { "name": "Supatest AI" },
-  "license": "MIT"
-}
