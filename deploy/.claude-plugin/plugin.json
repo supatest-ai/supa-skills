@@ -1,7 +1,0 @@
-{
-  "name": "deploy",
-  "description": "Deploy your application to staging or production using GitHub Actions via GitHub CLI. Auto-detects which services changed since the last deployment.",
-  "version": "1.0.0",
-  "author": { "name": "Supatest AI" },
-  "license": "MIT"
-}

@@ -1,7 +1,0 @@
-{
-  "name": "bug",
-  "description": "Investigate, reproduce, and fix a bug using a structured workflow. Captures a complete bug report, reproduces the issue reliably, finds the true root cause, writes a failing test before fixing, verifies the fix, and optionally files a GitHub issue.",
-  "version": "1.0.0",
-  "author": { "name": "Supatest AI" },
-  "license": "MIT"
-}

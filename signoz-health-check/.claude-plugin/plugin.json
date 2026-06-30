@@ -1,7 +1,0 @@
-{
-  "name": "signoz-health-check",
-  "description": "Check health and metrics of the SigNoz observability platform. Shows service health, error rates, latency, recent errors, and alerts.",
-  "version": "1.0.0",
-  "author": { "name": "Supatest AI" },
-  "license": "MIT"
-}
