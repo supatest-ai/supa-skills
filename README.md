@@ -21,6 +21,10 @@ Then install the skills you want:
 /plugin install debug-prod
 /plugin install bug
 /plugin install test-feature
+/plugin install task-to-pr
+/plugin install configure-task-to-pr
+/plugin install agent-browser
+/plugin install automate-e2e-tests
 /plugin install signoz-health-check
 /plugin install agent-readiness
 ```
@@ -48,7 +52,11 @@ Claude Code checks for updates automatically at every startup — no action need
 | **review-pr** | `/review-pr [PR number or branch]` | Review a PR. Filters to issues introduced by the PR, scores confidence, requires approval before posting. |
 | **debug-prod** | `/debug-prod [issue description]` | Investigate production incidents. Uses metrics → traces → logs funnel, produces structured findings report. |
 | **bug** | `/bug [description]` | Structured bug investigation: capture → reproduce → root cause → failing test → fix → verify. |
-| **test-feature** | `/test-feature [description]` | Interactively test a feature via browser automation. Captures a GIF walkthrough and verification report. |
+| **configure-task-to-pr** | `/configure-task-to-pr [project/context]` | Configure project-local task-to-PR skills by inspecting the repo, interviewing the team, and writing enriched local workflows. |
+| **task-to-pr** | `/task-to-pr [requirement-or-ticket]` | Drive a requirement from task or prompt through implementation, validation, commit, self-review, branch push, and PR. |
+| **test-feature** | `/test-feature [description]` | Interactively test a feature across web, mobile, desktop, or API surfaces and produce an evidence-backed HTML validation report. |
+| **agent-browser** | `/agent-browser [browser-task]` | Use the Agent Browser CLI for browser automation, screenshots, recordings, scraping, auth, and UI verification. |
+| **automate-e2e-tests** | `/automate-e2e-tests [feature-or-report]` | Create or update durable E2E regression tests after feature implementation and validation. |
 | **signoz-health-check** | `/signoz-health-check [timeRange]` | Comprehensive SigNoz observability health check across services, logs, metrics, traces, and alerts. |
 | **agent-readiness** | `/agent-readiness` | Evaluate codebase readiness for autonomous AI agent work. Scored report across 11 dimensions. |
 

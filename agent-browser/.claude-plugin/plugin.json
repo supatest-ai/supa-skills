@@ -1,0 +1,7 @@
+{
+  "name": "agent-browser",
+  "description": "Use the Agent Browser CLI for browser automation, testing, screenshots, recordings, scraping, and authenticated browser workflows.",
+  "version": "1.0.0",
+  "author": { "name": "Supatest AI" },
+  "license": "MIT"
+}

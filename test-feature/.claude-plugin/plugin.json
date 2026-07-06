@@ -1,7 +1,7 @@
 {
   "name": "test-feature",
-  "description": "Interactively test a completed feature using browser automation. Exercises all key flows, captures a GIF walkthrough, and produces a visual verification report.",
-  "version": "1.0.0",
+  "description": "Interactively test a completed feature across web, mobile, desktop, or API surfaces and produce an evidence-backed HTML validation report.",
+  "version": "1.1.0",
   "author": { "name": "Supatest AI" },
   "license": "MIT"
 }

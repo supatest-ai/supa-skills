@@ -1,0 +1,7 @@
+{
+  "name": "configure-task-to-pr",
+  "description": "Configure a project-specific task-to-PR skill stack by inspecting the repo, interviewing the team, and writing enriched local skills.",
+  "version": "1.0.0",
+  "author": { "name": "Supatest AI" },
+  "license": "MIT"
+}

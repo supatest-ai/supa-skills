@@ -10,13 +10,17 @@
   },
   "plugins": [
     { "name": "agent-readiness", "source": "./agent-readiness" },
+    { "name": "agent-browser",    "source": "./agent-browser" },
+    { "name": "automate-e2e-tests", "source": "./automate-e2e-tests" },
     { "name": "bug",             "source": "./bug" },
     { "name": "commit",          "source": "./commit" },
     { "name": "commit-all",      "source": "./commit-all" },
+    { "name": "configure-task-to-pr", "source": "./configure-task-to-pr" },
     { "name": "debug-prod",      "source": "./debug-prod" },
     { "name": "deploy",          "source": "./deploy" },
     { "name": "review-pr",       "source": "./review-pr" },
     { "name": "signoz-health-check", "source": "./signoz-health-check" },
+    { "name": "task-to-pr",      "source": "./task-to-pr" },
     { "name": "test-feature",    "source": "./test-feature" },
     { "name": "work-summary",    "source": "./work-summary" }
   ]

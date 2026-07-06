@@ -1,0 +1,7 @@
+{
+  "name": "automate-e2e-tests",
+  "description": "Create or update durable end-to-end regression tests after a feature has been implemented and validated.",
+  "version": "1.0.0",
+  "author": { "name": "Supatest AI" },
+  "license": "MIT"
+}
