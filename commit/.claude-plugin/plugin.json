@@ -1,7 +1,7 @@
 {
   "name": "commit",
   "description": "Commit already-staged files with well-structured conventional commit messages.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": { "name": "Supatest AI" },
   "license": "MIT"
 }

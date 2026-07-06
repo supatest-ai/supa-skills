@@ -1,3 +1,8 @@
+---
+name: commit
+description: This skill should be used when the user asks to commit already-staged changes, create a conventional commit message, or commit staged files safely. Do not use when the user wants to stage all changes or commit unrelated work.
+---
+
 # Commit Staged Files
 
 Commit staged files with well-structured commit messages following conventional commits format.
