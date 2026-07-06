@@ -78,13 +78,15 @@ Ask only questions whose answers change the generated skills. Group questions so
 Required questions:
 
 1. What surfaces should this workflow support: web, PWA, API, iOS, Android, React Native, desktop, CLI, library, data pipeline, infrastructure, or monorepo?
-2. Which commands prove correctness for this project: lint, format, typecheck, unit, integration, E2E, build, security scan, mobile simulator tests, contract tests, or other checks?
-3. What commands are expensive, flaky, destructive, or require approval?
-4. How should local feature validation work: app URL, auth path, test users, seed data, browser, device, simulator, emulator, or API client?
-5. What evidence should a completed task produce: screenshots, video, HTML report, test logs, coverage, trace, accessibility output, deployment links, or ticket comments?
-6. What does the PR body require: ticket link, problem, changes, tests, screenshots, risk, rollback, compatibility, security, accessibility, performance, observability, or release notes?
-7. What branch, commit, and push rules apply: branch prefix, ticket ID in branch, conventional commits, signed commits, squash policy, no-push policy, or review before push?
-8. What enterprise constraints apply: regulated data, client isolation, approval gates, no production access, migration guardrails, secrets policy, audit evidence, or security review?
+2. Which validation lanes exist for this project: lint, format, typecheck, compile, unit tests, component tests, integration tests, contract tests, E2E tests, feature validation, build/package, security scan, accessibility check, performance check, mobile simulator tests, or other checks?
+3. What exact command proves each lane, and what is the focused command pattern for changed files, packages, apps, or test names?
+4. Which lanes are required for each change type: docs, UI, API, shared logic, schema/database, auth/security, mobile, desktop, CLI, infrastructure, dependencies, or config?
+5. What commands are expensive, flaky, destructive, production-affecting, or require approval?
+6. How should local feature validation work: app URL, auth path, test users, seed data, browser, device, simulator, emulator, or API client?
+7. What evidence should a completed task produce: screenshots, video, HTML report, test logs, coverage, trace, accessibility output, deployment links, or ticket comments?
+8. What does the PR body require: ticket link, problem, changes, tests, screenshots, risk, rollback, compatibility, security, accessibility, performance, observability, or release notes?
+9. What branch, commit, and push rules apply: branch prefix, ticket ID in branch, conventional commits, signed commits, squash policy, no-push policy, or review before push?
+10. What enterprise constraints apply: regulated data, client isolation, approval gates, no production access, migration guardrails, secrets policy, audit evidence, or security review?
 
 Ask follow-up questions only for ambiguity that would make the skills unsafe or useless. If the user cannot answer, encode a runtime confirmation step in the relevant skill instead of guessing.
 
@@ -114,18 +116,37 @@ Each skill must include:
 - Clear trigger and anti-trigger behavior.
 - Project contract: stack, surfaces, and assumptions.
 - Exact commands and paths, with fallbacks only where needed.
+- Validation lanes with command, scope, required change types, focused-run pattern, full-run pattern, and skip/escalation rules.
 - Required evidence and report location.
 - Failure handling with concrete next actions.
 - Self-improvement instruction: if the workflow proves stale, patch the local skill.
 
 Use these specialization rules:
 
-- `task-to-pr`: orchestrates requirement, planning, implementation, validation, testing evidence, commit, self-review, push, and PR.
+- `task-to-pr`: orchestrates requirement, planning, implementation, validation lanes, testing evidence, commit, self-review, push, and PR.
 - `test-feature`: validates finished user-facing behavior and writes a feature validation report.
 - `automate-e2e-tests`: turns validated behavior into durable regression coverage using the project's E2E framework.
-- `agent-browser`: teaches browser mechanics for the available browser automation tool. If the Agent Browser CLI is standard, keep it thin and call `agent-browser skills get agent-browser --full` for current instructions.
+- `agent-browser`: teaches browser mechanics for the available browser automation tool. If the Agent Browser CLI is standard, keep it thin and call `agent-browser skills get core --full` for current instructions.
 - `commit`: encodes the project's commit, branch, staging, signing, and push policy.
 - `review-pr`: encodes local review dimensions, severity model, and domain risks.
+
+Configured `task-to-pr` skills should include a project-specific validation matrix. Use this shape unless the repo already has a better one:
+
+```md
+## Validation Gates
+
+| Change Type | Required Lanes | Focused Commands | Full Commands | Notes |
+|---|---|---|---|---|
+| Docs | docs lint if available | ... | ... | ... |
+| UI | lint, typecheck, unit/component, feature validation | ... | ... | ... |
+| Shared logic | lint, typecheck, unit, affected consumers | ... | ... | ... |
+| API | lint, typecheck/compile, unit, integration/contract | ... | ... | ... |
+| Schema/database | migration validation, integration, rollback notes | ... | ... | ... |
+| Auth/security | unit, integration, feature validation, security review | ... | ... | ... |
+| Mobile | lint/typecheck/compile, unit, simulator/device checks | ... | ... | ... |
+```
+
+Do not split lint, unit, or integration into separate public skills by default. Encode them as first-class validation lanes inside the configured project skills. Create separate local skills only when the lane has deep repeatable procedure, such as flaky-test triage, CI failure diagnosis, migration validation, or mobile simulator setup.
 
 ## Phase 5 - Preserve Upstream Provenance
 

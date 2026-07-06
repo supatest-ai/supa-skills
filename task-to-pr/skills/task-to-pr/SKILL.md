@@ -23,7 +23,7 @@ Before opening or marking a PR ready:
 - The likely files and ownership boundaries are understood.
 - Non-trivial work has a short plan.
 - The implementation covers the happy path, important unhappy paths, and recovery states.
-- Relevant checks have run, or the gap is documented.
+- Relevant validation lanes have run, or each skipped lane has a documented reason.
 - User-facing behavior has feature validation evidence when applicable.
 - Durable E2E coverage was added or deliberately skipped with a reason when browser/mobile integration behavior changed.
 - Only task-scoped files are staged and committed.
@@ -61,7 +61,7 @@ The plan should include:
 - Requirement and assumptions.
 - Files likely to change.
 - Implementation order.
-- Checks to run.
+- Validation lanes to run: lint, format, typecheck/compile, unit, integration, E2E, build/package, security, accessibility, performance, feature validation, or project-specific checks.
 - Feature validation decision.
 - Durable E2E decision.
 - Compatibility and risk notes.
@@ -80,12 +80,15 @@ If implementation exposes stale instructions or missing tooling, patch the narro
 
 ## Phase 4 - Validate
 
-Run the smallest meaningful validation for the touched surface.
+Run the smallest meaningful validation for the touched surface and risk level. Treat lint, typecheck/compile, unit tests, integration tests, E2E tests, build/package checks, security checks, accessibility checks, and feature validation as separate validation lanes.
 
-Common checks:
+Prefer the project's configured commands. If the project has not been configured yet, discover likely commands:
 
 ```bash
-npm test
+npm run
+pnpm run
+yarn run
+npm run test
 npm run lint
 npm run typecheck
 npm run build
@@ -99,7 +102,31 @@ mvn test
 ./gradlew test
 ```
 
-Use project-local commands when configured. Do not run expensive, destructive, or production-affecting commands unless the local skill or user explicitly permits them.
+Use this default validation matrix until a project-local `task-to-pr` skill replaces it:
+
+| Change Type | Expected Validation Lanes |
+|---|---|
+| Docs-only | docs lint or link check if available; otherwise `git diff --check` |
+| Formatting/config | formatter/lint check plus the narrow config validation command |
+| Pure logic | lint, typecheck/compile, focused unit tests |
+| Shared package/library | lint, typecheck/compile, focused unit tests, affected consumer compile/typecheck when practical |
+| UI component or screen | lint, typecheck/compile, unit/component tests when available, feature validation for visible behavior |
+| API route/service | lint, typecheck/compile, focused unit tests, integration or contract tests |
+| Database/schema/migration | migration generation/validation, integration tests, rollback or compatibility notes |
+| Auth, permissions, billing, or security | focused unit and integration tests, feature validation, security review notes, negative-path checks |
+| Mobile app | lint/typecheck/compile, focused unit tests, simulator/device checks when configured |
+| Desktop app | compile/package check plus the project's desktop smoke or integration check |
+| Dependencies/build tooling | install/lockfile validation, lint/typecheck/build or CI-equivalent check when practical |
+
+For each relevant lane, record:
+
+- Command run.
+- Scope: focused, package/app-specific, or full suite.
+- Result: pass, fail, mixed, blocked, or skipped.
+- Evidence path when the command produces artifacts.
+- Reason for any skipped or blocked lane.
+
+Do not run expensive, flaky, destructive, production-affecting, or externally visible commands unless the local skill or user explicitly permits them. When a required lane is unsafe or unavailable, document the exact blocker and remaining risk.
 
 For user-facing behavior, use `test-feature` or the configured surface-specific testing skill. It should exercise the real flow, capture evidence, and produce a validation report.
 
@@ -171,4 +198,4 @@ Report:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.0. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.1. Run `configure-task-to-pr` in each project to create a local enriched version.
