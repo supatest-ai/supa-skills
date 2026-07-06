@@ -13,7 +13,7 @@
     { "name": "agent-browser",    "source": "./agent-browser" },
     { "name": "automate-e2e-tests", "source": "./automate-e2e-tests" },
     { "name": "commit",          "source": "./commit" },
-    { "name": "configure-task-to-pr", "source": "./configure-task-to-pr" },
+    { "name": "setup-task-to-pr", "source": "./setup-task-to-pr" },
     { "name": "review-pr",       "source": "./review-pr" },
     { "name": "task-to-pr",      "source": "./task-to-pr" },
     { "name": "test-feature",    "source": "./test-feature" },

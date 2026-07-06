@@ -6,7 +6,7 @@ argument-hint: [feature-or-validation-report]
 
 # Automate E2E Tests
 
-Turn a validated behavior into durable regression coverage using the project's E2E, integration, contract, or mobile test framework. This is a generic starter skill; project teams should run `configure-task-to-pr` to enrich it with exact paths, commands, fixtures, auth, device setup, and CI rules.
+Turn a validated behavior into durable regression coverage using the project's E2E, integration, contract, or mobile test framework. This is a generic starter skill; project teams should run `setup-task-to-pr` to enrich it with exact paths, commands, fixtures, auth, device setup, and CI rules.
 
 ## When Not to Use
 
@@ -115,7 +115,7 @@ Report the exact files changed, command run, pass/fail result, and remaining ris
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `automate-e2e-tests` v1.0.1. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `automate-e2e-tests` v1.0.1. Run `setup-task-to-pr` in each project to create a local enriched version.
 
 ## Self-Improvement
 

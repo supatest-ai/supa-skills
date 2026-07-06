@@ -6,14 +6,14 @@ argument-hint: [requirement-or-ticket]
 
 # Task to PR
 
-Drive a requirement from understanding to implementation, validation, commit, self-review, branch push, and pull request. This is the generic starter skill. In real projects, run `configure-task-to-pr` first so this skill can be enriched with local commands and delivery rules.
+Drive a requirement from understanding to implementation, validation, commit, self-review, branch push, and pull request. This is the generic starter skill. In real projects, run `setup-task-to-pr` first so this skill can be enriched with local commands and delivery rules.
 
 ## When Not to Use
 
 - Do not use for pure code review. Use `review-pr`.
 - Do not use for committing already-finished work only. Use `commit`.
 - Do not use for only browser-testing a completed feature. Use `test-feature`.
-- Do not use when the user asks to configure the workflow for a repo. Use `configure-task-to-pr`.
+- Do not use when the user asks to set up the workflow for a repo. Use `setup-task-to-pr`.
 
 ## Delivery Contract
 
@@ -208,7 +208,7 @@ Report:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.2. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.2. Run `setup-task-to-pr` in each project to create a local enriched version.
 
 ## Self-Improvement
 

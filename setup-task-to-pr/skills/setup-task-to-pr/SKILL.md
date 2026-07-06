@@ -1,10 +1,10 @@
 ---
-name: configure-task-to-pr
-description: This skill should be used when the user asks to configure, customize, bootstrap, adapt, or install the task-to-PR workflow for a repo, team, client project, web app, mobile app, API, desktop app, or monorepo. Do not use to execute a task.
+name: setup-task-to-pr
+description: This skill should be used when the user asks to set up, customize, bootstrap, adapt, or install the task-to-PR workflow for a repo, team, client project, web app, mobile app, API, desktop app, or monorepo. Do not use to execute a task.
 argument-hint: [project/context]
 ---
 
-# Configure Task to PR
+# Setup Task to PR
 
 Turn the generic Supatest AI task-to-PR skill suite into project-local skills that know the current repository's commands, validation gates, review rules, artifact paths, surfaces, and operational constraints.
 
@@ -160,7 +160,7 @@ Add a short provenance section near the bottom of generated local skills:
 ```md
 ## Source
 
-Generated from Supatest AI supa-skills `<skill-name>` v<version> by `configure-task-to-pr`.
+Generated from Supatest AI supa-skills `<skill-name>` v<version> by `setup-task-to-pr`.
 Project-specific behavior is intentionally local to this repository.
 ```
 

@@ -18,7 +18,7 @@ Then install the skills you want:
 /plugin install review-pr
 /plugin install test-feature
 /plugin install task-to-pr
-/plugin install configure-task-to-pr
+/plugin install setup-task-to-pr
 /plugin install agent-browser
 /plugin install automate-e2e-tests
 /plugin install agent-readiness
@@ -43,7 +43,7 @@ Claude Code checks for updates automatically at every startup — no action need
 | **commit** | `/commit` | Commit already-staged files with conventional commit messages. Includes full merge conflict protocol. |
 | **work-summary** | `/work-summary <author> "<start>" "<end>" <repos...>` | Generate work summaries from git commits with task categorization. |
 | **review-pr** | `/review-pr [PR number or branch]` | Review a PR. Filters to issues introduced by the PR, scores confidence, requires approval before posting. |
-| **configure-task-to-pr** | `/configure-task-to-pr [project/context]` | Configure project-local task-to-PR skills by inspecting the repo, interviewing the team, and writing enriched local workflows. |
+| **setup-task-to-pr** | `/setup-task-to-pr [project/context]` | Set up project-local task-to-PR skills by inspecting the repo, interviewing the team, and writing enriched local workflows. |
 | **task-to-pr** | `/task-to-pr [requirement-or-ticket]` | Drive a requirement from task or prompt through implementation, validation, commit, self-review, branch push, and PR. |
 | **test-feature** | `/test-feature [description]` | Interactively test a feature across web, mobile, desktop, or API surfaces and produce an evidence-backed HTML validation report. |
 | **agent-browser** | `/agent-browser [browser-task]` | Use the Agent Browser CLI for browser automation, screenshots, recordings, scraping, auth, and UI verification. |

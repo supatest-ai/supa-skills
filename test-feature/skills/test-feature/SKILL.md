@@ -8,7 +8,7 @@ argument-hint: [feature-description]
 
 Validate a finished or nearly finished feature through the real product surface, capture evidence, and write a local HTML report. This is the human-facing QA workflow. Use `agent-browser` for low-level browser mechanics and `automate-e2e-tests` when the validated behavior needs durable regression coverage.
 
-This is the generic starter skill. In real projects, run `configure-task-to-pr` first so this skill can be enriched with local URLs, auth, devices, commands, report paths, and surface-specific rules.
+This is the generic starter skill. In real projects, run `setup-task-to-pr` first so this skill can be enriched with local URLs, auth, devices, commands, report paths, and surface-specific rules.
 
 ## When Not to Use
 
@@ -41,7 +41,7 @@ Use the surface that matches the feature:
 | API-only | Exercise the API with the approved client and record request/response evidence. |
 | Monorepo | Test the app or package that owns the changed behavior. |
 
-If a repo has meaningfully different validation machinery for web, mobile, API, or desktop, recommend running `configure-task-to-pr` to split this into surface-specific local skills.
+If a repo has meaningfully different validation machinery for web, mobile, API, or desktop, recommend running `setup-task-to-pr` to split this into surface-specific local skills.
 
 ## Validation Plan
 
@@ -168,7 +168,7 @@ Report:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `test-feature` v1.1.1. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `test-feature` v1.1.1. Run `setup-task-to-pr` in each project to create a local enriched version.
 
 ## Self-Improvement
 
