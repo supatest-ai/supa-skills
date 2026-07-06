@@ -1,7 +1,7 @@
 {
   "name": "test-feature",
   "description": "Interactively test a completed feature across web, mobile, desktop, or API surfaces and produce an evidence-backed HTML validation report.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": { "name": "Supatest AI" },
   "license": "MIT"
 }

@@ -1,6 +1,6 @@
 ---
 name: agent-browser
-description: Use Agent Browser for browser automation. Trigger when the user asks to open a website, click, type, fill a form, take screenshots, record video, scrape page data, test a web app, verify UI behavior, log in to a site, or automate browser actions.
+description: "This skill should be used when the user asks to drive Agent Browser: open a site, click, fill forms, take screenshots, record video, scrape pages, verify UI, or reuse browser auth. Do not use for pure HTTP/API calls or test-file authoring."
 argument-hint: [browser-task]
 ---
 
@@ -101,4 +101,8 @@ For testing and verification work:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `agent-browser` v1.0.0. It intentionally keeps the familiar skill name while delegating detailed instructions to the installed Agent Browser CLI `core` skill so usage stays aligned with the local CLI version.
+Generic starter from Supatest AI supa-skills `agent-browser` v1.0.1. It intentionally keeps the familiar skill name while delegating detailed instructions to the installed Agent Browser CLI `core` skill so usage stays aligned with the local CLI version.
+
+## Self-Improvement
+
+If Agent Browser changes its skill name, install command, or recovery workflow, patch this skill in the same change set.

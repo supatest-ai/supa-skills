@@ -1,6 +1,6 @@
 ---
 name: configure-task-to-pr
-description: Configure a project-specific task-to-PR pipeline. Use when the user asks to set up, customize, bootstrap, adapt, or install the task-to-PR workflow for a repo, team, client project, enterprise codebase, web app, mobile app, API, desktop app, or monorepo.
+description: This skill should be used when the user asks to configure, customize, bootstrap, adapt, or install the task-to-PR workflow for a repo, team, client project, web app, mobile app, API, desktop app, or monorepo. Do not use to execute a task.
 argument-hint: [project/context]
 ---
 
@@ -44,6 +44,9 @@ Create surface-specific testing skills only when validation machinery truly diff
 - `test-android-feature`
 - `test-api-feature`
 - `test-desktop-feature`
+- `integration-test`
+- `contract-test`
+- `ci-failure-triage`
 
 Split by tooling and evidence requirements, not by product labels. For example, a web app and PWA that both use Playwright can share `test-feature`; native iOS and Android apps usually deserve separate configured skills.
 
@@ -106,6 +109,8 @@ Use this decision table:
 
 Keep the first configuration small enough to use. Add split skills when the team names a concrete command, tool, or evidence requirement that differs by surface.
 
+Create deep validation-lane skills such as `integration-test`, `contract-test`, `migration-validate`, or `ci-failure-triage` only when the lane has repeatable procedure beyond a command: fixture setup, environment routing, failure classification, retries, artifact parsing, or team-specific escalation.
+
 ## Phase 4 - Write Project-Local Skills
 
 For each local skill, write a complete coherent `SKILL.md`. Do not append a vague "Project Overrides" section to a generic body.
@@ -125,7 +130,7 @@ Use these specialization rules:
 
 - `task-to-pr`: orchestrates requirement, planning, implementation, validation lanes, testing evidence, commit, self-review, push, and PR.
 - `test-feature`: validates finished user-facing behavior and writes a feature validation report.
-- `automate-e2e-tests`: turns validated behavior into durable regression coverage using the project's E2E framework.
+- `automate-e2e-tests`: turns validated behavior into durable regression coverage using the project's E2E, integration, contract, API, browser, or mobile framework.
 - `agent-browser`: teaches browser mechanics for the available browser automation tool. If the Agent Browser CLI is standard, keep it thin and call `agent-browser skills get core --full` for current instructions.
 - `commit`: encodes the project's commit, branch, staging, signing, and push policy.
 - `review-pr`: encodes local review dimensions, severity model, and domain risks.
@@ -161,6 +166,14 @@ Project-specific behavior is intentionally local to this repository.
 
 When updating an existing configured skill, preserve useful local knowledge. Replace stale commands, remove contradictions, and keep the source/version current.
 
+When reconfiguring an existing project:
+
+1. Read each existing local skill before editing.
+2. Preserve local domain knowledge, client rules, incident learnings, and hard-won failure handling.
+3. Replace stale generic sections and incorrect commands.
+4. Report any local section that was removed or substantially rewritten.
+5. Never overwrite project-specific rules with marketplace defaults without naming the tradeoff.
+
 ## Phase 6 - Validate
 
 After writing skills:
@@ -187,3 +200,7 @@ Report:
 - Commands and gates configured.
 - Questions left for runtime confirmation.
 - Any risks, missing credentials, unavailable tooling, or project docs that should be improved.
+
+## Self-Improvement
+
+If this configurator misses a common project shape, validation lane, local-skill location, or enterprise constraint during setup, patch this skill before closing.

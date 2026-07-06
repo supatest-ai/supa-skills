@@ -1,6 +1,6 @@
 ---
 name: task-to-pr
-description: Drive a task, ticket, bug, or feature from requirement to pull request. Use when the user asks to implement work end-to-end, take a ticket to PR, finish a feature, fix a bug through PR, or run the full delivery loop.
+description: "This skill should be used when the user asks to take a task, ticket, bug, or feature end to end: understand, plan, implement, validate, commit, self-review, push, and open a PR. Do not use for pure review, commit-only, or workflow configuration."
 argument-hint: [requirement-or-ticket]
 ---
 
@@ -185,6 +185,16 @@ Default PR body:
 
 Include links or paths to validation reports, screenshots, video, test output, or other evidence.
 
+## Phase 7 - CI Follow-Up
+
+If CI access is available after opening or updating the PR:
+
+1. Inspect required check status with the project's PR tool or CI dashboard.
+2. If checks pass, record that in the closeout.
+3. If checks fail, classify each failure as product, test, environment, dependency, permission, or unrelated existing failure.
+4. Fix product or test failures introduced by this task, then rerun the narrowest relevant command locally before pushing an update.
+5. Do not chase broad flaky-suite, infrastructure, permission, or unrelated failures without user approval. Document exact failing checks and next action.
+
 ## Closeout
 
 Report:
@@ -198,4 +208,8 @@ Report:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.1. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `task-to-pr` v1.0.2. Run `configure-task-to-pr` in each project to create a local enriched version.
+
+## Self-Improvement
+
+If this workflow misses a required validation gate, PR rule, CI behavior, or delivery artifact during real use, patch this skill or the configured project-local version before closing.

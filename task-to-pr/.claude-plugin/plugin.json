@@ -1,7 +1,7 @@
 {
   "name": "task-to-pr",
   "description": "Drive a requirement from task or prompt to implementation, validation, commit, self-review, branch push, and pull request.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": { "name": "Supatest AI" },
   "license": "MIT"
 }

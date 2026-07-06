@@ -1,12 +1,12 @@
 ---
 name: automate-e2e-tests
-description: Create, add, automate, or update end-to-end tests for a new or changed feature. Use after implementation and feature validation when browser, mobile, API, routing, auth, or multi-service behavior needs durable regression coverage.
+description: This skill should be used when the user asks to add or update durable E2E, integration, contract, browser, mobile, API, routing, auth, or multi-service regression tests after a feature is validated. Do not use for manual QA only.
 argument-hint: [feature-or-validation-report]
 ---
 
 # Automate E2E Tests
 
-Turn a validated user journey into durable regression coverage using the project's E2E framework. This is a generic starter skill; project teams should run `configure-task-to-pr` to enrich it with exact paths, commands, fixtures, auth, device setup, and CI rules.
+Turn a validated behavior into durable regression coverage using the project's E2E, integration, contract, or mobile test framework. This is a generic starter skill; project teams should run `configure-task-to-pr` to enrich it with exact paths, commands, fixtures, auth, device setup, and CI rules.
 
 ## When Not to Use
 
@@ -107,6 +107,7 @@ Run broader E2E or CI-equivalent checks only when touched helpers, fixtures, set
 Success produces one of:
 
 - A new or updated E2E spec/flow.
+- A new or updated integration or contract test when that is the right regression layer.
 - A narrow fixture/helper update required by that spec.
 - A documented E2E coverage exception with the alternate coverage used.
 
@@ -114,4 +115,8 @@ Report the exact files changed, command run, pass/fail result, and remaining ris
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `automate-e2e-tests` v1.0.0. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `automate-e2e-tests` v1.0.1. Run `configure-task-to-pr` in each project to create a local enriched version.
+
+## Self-Improvement
+
+If this skill chooses the wrong regression layer, misses a project test framework, or creates brittle tests, patch this skill or the configured project-local version before closing.

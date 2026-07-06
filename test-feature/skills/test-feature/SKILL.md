@@ -1,6 +1,6 @@
 ---
 name: test-feature
-description: Interactively test a completed user-facing feature. Use when the user asks to QA, dogfood, browser-test, mobile-test, verify, produce screenshots/video evidence, or create a feature validation report after implementation.
+description: This skill should be used when the user asks to QA, dogfood, browser-test, mobile-test, verify, capture evidence, or create a validation report for a completed user-facing feature. Do not use for test-file authoring.
 argument-hint: [feature-description]
 ---
 
@@ -133,72 +133,7 @@ The report must include:
 
 Minimal report template:
 
-```html
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Feature Validation: FEATURE</title>
-  <style>
-    body { font: 14px/1.6 system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 24px; color: #172033; background: #f7f8fb; }
-    h1 { font-size: 24px; margin: 0 0 4px; }
-    h2 { font-size: 16px; margin-top: 28px; border-bottom: 1px solid #d9deea; padding-bottom: 6px; }
-    .meta { color: #5e6a7d; font-size: 13px; margin-bottom: 16px; }
-    .status { display: inline-block; border-radius: 999px; padding: 4px 12px; font-weight: 700; }
-    .pass { background: #dcfce7; color: #166534; }
-    .fail { background: #fee2e2; color: #991b1b; }
-    .mixed { background: #fef3c7; color: #92400e; }
-    .blocked { background: #e5e7eb; color: #374151; }
-    table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #d9deea; }
-    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e8ecf3; vertical-align: top; }
-    th { font-size: 12px; text-transform: uppercase; color: #5e6a7d; background: #eef2f7; }
-    img, video { max-width: 100%; border: 1px solid #d9deea; border-radius: 6px; background: white; }
-    .evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-    .card { background: white; border: 1px solid #d9deea; border-radius: 8px; padding: 12px; }
-    code { background: #eef2f7; padding: 1px 4px; border-radius: 4px; }
-  </style>
-</head>
-<body>
-  <h1>Feature Validation: FEATURE</h1>
-  <div class="meta">Date: DATE | Branch: BRANCH | Commit: SHA</div>
-  <div class="status pass">PASS</div>
-
-  <h2>Summary</h2>
-  <p>SUMMARY</p>
-
-  <h2>Environment</h2>
-  <table>
-    <tr><th>Item</th><th>Value</th></tr>
-    <tr><td>URL / Device</td><td>VALUE</td></tr>
-    <tr><td>Tool</td><td>VALUE</td></tr>
-    <tr><td>Auth</td><td>VALUE</td></tr>
-  </table>
-
-  <h2>Journey</h2>
-  <table>
-    <tr><th>Flow</th><th>Expected</th><th>Observed</th><th>Status</th></tr>
-    <tr><td>Happy path</td><td>EXPECTED</td><td>OBSERVED</td><td>pass</td></tr>
-  </table>
-
-  <h2>Evidence</h2>
-  <div class="evidence">
-    <div class="card">
-      <a href="screenshots/01-initial-state.png"><img src="screenshots/01-initial-state.png" alt="Initial state"></a>
-      <p>Initial state.</p>
-    </div>
-  </div>
-
-  <h2>Commands</h2>
-  <pre><code>COMMANDS</code></pre>
-
-  <h2>Issues and Risks</h2>
-  <p>ISSUES_OR_NONE</p>
-
-  <h2>E2E Coverage Decision</h2>
-  <p>DECISION</p>
-</body>
-</html>
-```
+Use `references/report-template.html` as the starting point when the project does not already provide a validation report template.
 
 ## Handoff to E2E
 
@@ -233,4 +168,8 @@ Report:
 
 ## Source
 
-Generic starter from Supatest AI supa-skills `test-feature` v1.1.0. Run `configure-task-to-pr` in each project to create a local enriched version.
+Generic starter from Supatest AI supa-skills `test-feature` v1.1.1. Run `configure-task-to-pr` in each project to create a local enriched version.
+
+## Self-Improvement
+
+If this skill misses a required evidence type, surface, status, or report field during validation, patch this skill or the configured project-local version before closing.
